@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue By javascript</title>
+    <style type="text/css">
+        #queue{
+            height: 150px;
+            margin: 20px;
+        }
+        #queue span{
+            width: 20px;
+            color: white;
+            background-color: red;
+            margin: 5px;
+            display: inline-block;
+            vertical-align: bottom;
+            cursor: pointer;
+        }
+        button{
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<form>
+    <label>
+        <input id="input"/>
+    </label>
+</form>
+    <button id="leftIn">左边插入</button>
+    <button id="rightIn">右边插入</button>
+    <button id="leftDe">左边删除</button>
+    <button id="rightDe">右边删除</button>
+    <button id="sort">排序</button>
+    <div id="queue"></div>
+<script type="text/javascript">
+    var myQueue=document.getElementById('queue');
+    var total=0;
+    var arr=[];
+    //左输入
+    function leftInter(){
+        var myInput=document.getElementById('input').value;
+        var mySpan=document.createElement("span");
+        mySpan.style.height=myInput+"px";//span高度即为输入数字.
+        //判断输入内容是否为数字
+        if(isNaN(myQueue)){
+            //判断输入的数字为10-100
+            if(myInput>9&&myInput<101)
+            {
+                if(total<61){
+                    //mySpan获得数据;插入在myQueue
+                    mySpan.innerHTML=myInput.toString();
+                    myQueue.insertBefore(mySpan,myQueue.firstChild);
+                    ++total;//统计插入数据个数
+                    myInput="";//插入后清空input
+                }
+                else{
+                    alter("数据已满60,无法插入");
+                }
+            }
+            else{
+                alert("请输入10-100中的数字")
+            }
+        }
+        else if(myInput=""){
+            alert("未输入任何数,请输入数字");
+        }
+        else{
+            alert("格式不对,请输入数字");
+        }
+        return false;
+        console.log(mySpan);
+    }
+    //右输入
+    function rightInter(){
+        var myInput=document.getElementById('input').value;
+        var mySpan=document.createElement("span");
+        mySpan.style.height=myInput+"px";//span高度即为输入数字.
+        //判断输入的数字为10-100
+        if(isNaN(myQueue)) {
+            if (myInput > 9 && myInput < 101) {
+                if (total < 61) {
+                    //mySpan获得数据;插入在myQueue
+                    mySpan.innerHTML = myInput.toString();
+                    myQueue.appendChild(mySpan);
+                    ++total;//统计插入数据个数
+                    myInput = "";//插入后清空input
+                }
+                else {
+                    alter("数据已满60,无法插入");
+                }
+            }
+            else {
+                alert("请输入10-100中的数字");
+            }
+        }
+        else if(myInput=""){
+            alert("未输入任何数,请输入数字");
+        }
+        else{
+            alert("格式不对,请输入数字");
+        }
+    }
+    //sort冒泡排序
+    var sort = document.getElementById("sort");
+    sort.onclick = function(){
+        var temp;
+        var list = myQueue.children;
+        if(list.length<=0){
+            alert("请输入数据再进行排序！");
+        }else{
+            for(var i=0; i<list.length-1; i++){
+                for(var j=0; j<list.length-1-i; j++){
+                    if(Number(list[j].innerHTML)>Number(list[j+1].innerHTML)){
+                        temp = list[j].innerHTML;
+                        list[j].innerHTML = list[j+1].innerHTML;
+                        list[j+1].innerHTML = temp;
+                    }
+                }
+            }
+            //数据决定高度.
+            for(var i=0; i<list.length; i++){
+                list[i].setAttribute("style","height:"+list[i].innerHTML+"px");
+            }
+        }
+    }
+
+    //进行左边删除;右边删除
+    function leftDelete(){
+        var node=myQueue.removeChild(myQueue.firstChild);
+        arr.pop(node);
+        alert("已删除"+node.innerText);
+        }
+    function rightDelete(){
+        var node=myQueue.removeChild(myQueue.lastChild);
+        arr.pop(node);
+        alert("已删除"+node.innerText);
+    }
+    //绑定4个按钮
+    function initLeftIn() {
+        var btn = document.getElementById('leftIn');
+        btn.addEventListener('click',function(){
+            leftInter();
+  //          btn.disabled = "true";//让button失效
+        })
+    }
+    function initRightIn() {
+        var btn = document.getElementById('rightIn');
+        btn.addEventListener('click',function(){
+            rightInter();
+//            btn.disabled = "true";//让button失效
+        })
+    }
+    function initLeftDe() {
+        var btn = document.getElementById('leftDe');
+        btn.addEventListener('click',function(){
+            leftDelete();
+//      //      btn.disabled = "true";//让button失效
+        })
+    }
+    function initRightDe() {
+        var btn = document.getElementById('rightDe');
+        btn.addEventListener('click',function(){
+            rightDelete();
+//      //      btn.disabled = "true";//让button失效
+        })
+    }
+    //点击文中元素会被删除
+    myQueue.addEventListener('click',function(){
+        if(event.target.nodeName.toLowerCase()=="span"){
+            myQueue.removeChild(event.target);
+            arr.pop(event.target);
+        }
+    })
+    initLeftIn();
+    initRightIn();
+    initLeftDe();
+    initRightDe();
+</script>
+</body>
+</html>
